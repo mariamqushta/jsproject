@@ -72,7 +72,7 @@ function drawcartproduct(allproducts=[]){
                           <p class="add">${item.price} </p>
                           <p class="add" id="add">${item.color}</p>
                           <p class="add">${item.qty} </p>
-                          <button class="add_to_cart remove_from_cart" style="background:red;" onClick="remove(${item.id})">remove from cart</button>
+                          <button class="add_to_cart remove_from_cart" style="background:red;" onClick="remove2(${item.id})">remove from cart</button>
                           
                   
             </div>
@@ -96,7 +96,16 @@ function drawcartproduct(allproducts=[]){
 
 
 
-
+      function remove2(id){
+        let productsfav =localStorage.getItem("productsfav")
+        if(productsfav){
+            let items=JSON.parse(productsfav)
+            let filltereditem=items.filter((e) => e.id!==id);
+            localStorage.setItem("productsfav",JSON.stringify(filltereditem));
+            
+            drawcartproduct2(filltereditem);
+        }
+    }
 
 
 
@@ -108,6 +117,7 @@ function remove(id){
         let filltereditem=items.filter((e) => e.id!==id);
         localStorage.setItem("productsINcart",JSON.stringify(filltereditem));
         drawcartproduct(filltereditem);
+      
     }
 }
 

@@ -170,7 +170,7 @@ let products = [
 ]
 
 
-// onClick="addtofav(${item.id})"
+// onClick="removeaddtofav(${item.id})"
 // onClick="heart(${item.id})"
 function drawItem() {
     let y = products.map((item) => {
@@ -188,8 +188,8 @@ function drawItem() {
                     <button class="add_to_cart remove_from_cart" style="background:red; display:none;" onClick="removetocart(${item.id})">remove from cart</button>
                     </div>
                     <div class="prouduct_item_action"style="display:inline" >
-                        <i class="far fa-heart fav heart1" ></i>
-                        <i class="fas fa-heart fav heart2" style="display:none;" ></i>
+                        <i class="far fa-heart fav heart1" onClick="removeaddtofav(${item.id})"></i>
+                        <i class="fas fa-heart fav heart2" style="display:none;"onClick="addtofav(${item.id})" ></i>
                     </div>
             
       </div>
@@ -426,4 +426,24 @@ function addtofav(id){
             window.location="login.html"
         }
         }
+
+        function removeaddtofav(id){
+            if(localStorage.getItem=("username")){
+            let choosenItem = products.find((item) => item.id === id)
+            choosenItem.liked!=true;
+            favorititems=[...favorititems ,choosenItem]
+            let uniqueitem = getuniquearr(favorititems , "id")
+            localStorage.setItem("productsfav" ,JSON.stringify(uniqueitem) )
+           products.map(item => {
+            if(item.id===choosenItem.id){
+                item.liked!=true
+            }
+           })
+        localStorage.setItem('products',JSON.stringify(products))
+           drawItem(products)
+        }else{
+            window.location="login.html"
+        }
+        }
+
 

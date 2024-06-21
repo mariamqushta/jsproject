@@ -170,11 +170,11 @@ let products = [
 ]
 
 
-
+// onClick="addtofav(${item.id})"
 // onClick="heart(${item.id})"
 function drawItem() {
     let y = products.map((item) => {
-        return ` <section class="Home">
+        x= ` <section class="Home">
         <div class="container mt-5">
           <div class=" products">
             <div class=" product_item ">
@@ -185,11 +185,11 @@ function drawItem() {
                     <p class="add" id="add">${item.color}</p>
                     <div class="buttons">
                     <button class="add_to_cart purble" style="display:block;" onClick="addtocart(${item.id})">Add to cart</button>
-                    <button class="add_to_cart remove_from_cart" style="background:red; display:none;" onClick="remove(${item.id})">remove from cart</button>
+                    <button class="add_to_cart remove_from_cart" style="background:red; display:none;" onClick="removetocart(${item.id})">remove from cart</button>
                     </div>
                     <div class="prouduct_item_action"style="display:inline" >
                         <i class="far fa-heart fav heart1" ></i>
-                        <i class="fas fa-heart fav heart2" style="display:none;" onClick="addtofav(${item.id})"></i>
+                        <i class="fas fa-heart fav heart2" style="display:none;" ></i>
                     </div>
             
       </div>
@@ -200,9 +200,9 @@ function drawItem() {
     
     
     
+    allproducts.innerHTML+=x;
 }
 )
-allproducts.innerHTML=y;
 }drawItem()
 
 
@@ -230,11 +230,7 @@ function search(){
 
 
 
-{/* <span style="width:30px;height:20px;"></span> */}
-// cartproductDiv.innerHTML += ` <p>   <img  src=" ${item.imageUrl}" 
-// style="width:50px;height:60px; margin-righ= 50px !important;"/> <i class="fas fa-plus text-info  plus" style="font-size: 20px;margin-left=50px !important;
-// color:rgb(189, 120, 214)!important ;" ></i> <span class="max">1</span> <i class="fas fa-minus text-info   minus" style="font-size: 20px;
-// color:rgb(189, 120, 214)!important ;" ></i> <span class="min">200$</span> </p>`} )
+
 
 let badge = document.querySelector(".badge")
 
@@ -287,13 +283,23 @@ function addtocart(id){
 
 
 
+       
+               
+
+
+
+
+
+
+
+
         function removetocart(id){
             if(localStorage.getItem=("username")){
             let choosenItem = products.find((item) => item.id === id)
             let item = allitems.find((i) => i.id === choosenItem.id);
             if(item){
-                choosenItem.qty -= 1;
-                
+                // choosenItem.qty -= 1;
+                choosenItem.qty =+choosenItem.qty-1;
             }else{
                 allitems.push(choosenItem);
                 console.log("a",allitems);
@@ -335,7 +341,8 @@ function getuniquearr(arr , filtertype){
 
 
 
-let shoppingcartICON = document.querySelector(".shopping_cart")
+// let shoppingcartICON = document.querySelector(".shopping_cart")
+let shoppingcartICON = document.querySelector(".carticon")
 let cartProducts = document.querySelector(".carts_product")
 
 shoppingcartICON.addEventListener("click", opencart)

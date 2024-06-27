@@ -54,7 +54,7 @@ let products = [
     }, {
         id: 4,
         prouduct: "Sweater coat",
-        price: "150%",
+        price: "150$",
         color: "White,brown",
         imageUrl: "image/Daisy Flower Print Retro Sweater Cardigan with Dolman Long Sleeves Vneck Button Closure_ Super Soft Fabric in Black, Ivory, Green, Khaki.jpg"
         ,qty: 1
@@ -114,7 +114,7 @@ let products = [
     {
         id: 12,
         prouduct: "Bage",
-        price: "65%",
+        price: "65$",
         color: "Light pink roses",
         imageUrl: "image/download (6).jpg"
         ,qty: 1
@@ -169,9 +169,11 @@ let products = [
     }
 ]
 
-
+{/* <i class="far fa-heart fav heart1"style="display:block" onClick="removeaddtofav(${item.id})"></i> */}
 // onClick="removeaddtofav(${item.id})"
 // onClick="heart(${item.id})"
+// style="display:${item.liked==false?"none":"block"}"
+// style="display:${item.liked==true?"block":"none"}"
 function drawItem() {
     let y = products.map((item) => {
         x= ` <section class="Home">
@@ -188,8 +190,8 @@ function drawItem() {
                     <button class="add_to_cart remove_from_cart" style="background:red; display:none;" onClick="removetocart(${item.id})">remove from cart</button>
                     </div>
                     <div class="prouduct_item_action"style="display:inline" >
-                        <i class="far fa-heart fav heart1" onClick="removeaddtofav(${item.id})"></i>
-                        <i class="fas fa-heart fav heart2" style="display:none;"onClick="addtofav(${item.id})" ></i>
+                    <i class="far fa-heart fav heart1"style="display:block" onClick="removeaddtofav(${item.id})"></i>
+                        <i class="fas fa-heart fav heart2" style="display:none" onClick="addtofav(${item.id})" ></i>
                     </div>
             
       </div>
@@ -236,7 +238,8 @@ let badge = document.querySelector(".badge")
 
 let cartproductDiv = document.querySelector(".carts_product div ")
 let addedItem = localStorage.getItem("productsINcart")? JSON.parse(localStorage.getItem("productsINcart")) : [];
-
+view()
+function view(){
 if(addedItem){
     addedItem.map(item =>{
         cartproductDiv.innerHTML +=`<p>   <img  src=" ${item.imageUrl}" 
@@ -246,7 +249,7 @@ if(addedItem){
         badge.style.display="block"
         badge.innerHTML = addedItem.length;
 }
-
+}
 
 let allitems = [];
 function addtocart(id){
@@ -297,26 +300,41 @@ function addtocart(id){
             if(localStorage.getItem=("username")){
             let choosenItem = products.find((item) => item.id === id)
             let item = allitems.find((i) => i.id === choosenItem.id);
+            if(item.qty>0){
             if(item){
-                // choosenItem.qty -= 1;
-                choosenItem.qty =+choosenItem.qty-1;
-            }else{
+                choosenItem.qty-=1;
+                if(choosenItem.qty==0){
+                    allitems=allitems.filter(e=>e.id!=id);
+                }}else{
                 allitems.push(choosenItem);
-                console.log("a",allitems);
-            }
+                console.log("a",allitems);}
             cartproductDiv.innerHTML = "";
             allitems.forEach((item) => {
-                cartproductDiv.innerHTML -=`<p>   <img  src=" ${item.imageUrl}" 
+                cartproductDiv.innerHTML +=`<p>   <img  src=" ${item.imageUrl}" 
          style="width:50px;height:60px; margin-righ= 50px !important;"/> <i class="fas fa-plus text-info  plus" style="font-size: 20px;margin-left=50px !important;
          color:rgb(189, 120, 214)!important ;" onClick="addtocart(${item.id})"></i> <span class="max">${item.qty}</span> <i class="fas fa-minus text-info   minus" style="font-size: 20px;
          color:rgb(189, 120, 214)!important ;" onClick="removetocart(${item.id})" ></i>  </p>`
-            }
-            )
-            
+            })
+            let cartproductlength = document.querySelectorAll(".carts_product div p")
             let uniqueitem = getuniquearr(addedItem , "id")
             addedItem=[...addedItem ,choosenItem]
             localStorage.setItem("productsINcart" ,JSON.stringify(uniqueitem) )
-            
+            let x = cartproductlength.length;
+            badge.style.display="block"
+            badge.innerHTML = x;
+        }
+           else {
+            let productsINcart =localStorage.getItem("productsINcart")
+       if(productsINcart){
+        let items=JSON.parse(productsINcart)
+        let filltereditem=items.filter((e) => e.id!==id);
+        console.log(filltereditem)
+        localStorage.setItem("productsINcart",JSON.stringify(filltereditem));
+        drawItem(filltereditem);
+    }       cartproductDiv.innerHTML=""  
+            // view(addedItem)
+           } 
+        
         }else{
             window.location="login.html"
         }
@@ -382,22 +400,25 @@ buttons.forEach(item => {
     item.addEventListener("click", function() {
     
         let add = item.querySelector(".purble");
-        let remove = item.querySelector(".remove_from_cart");
+        let remove1 = item.querySelector(".remove_from_cart");
 
         if (add.style.display === "block" || add.style.display === "") {
             add.style.display = "none";
-            remove.style.display = "block";
+            remove1.style.display = "block";
         } else {
             add.style.display = "block";
-            remove.style.display = "none";
+            remove1.style.display = "none";
         }
     });
 });
 function remove(id){
     let productsINcart =localStorage.getItem("productsINcart")
+    // console.log(productsINcart)
     if(productsINcart){
         let items=JSON.parse(productsINcart)
+        // console.log(items)
         let filltereditem=items.filter((e) => e.id!==id);
+        console.log(filltereditem)
         localStorage.setItem("productsINcart",JSON.stringify(filltereditem));
         drawItem(filltereditem);
     }
@@ -412,6 +433,7 @@ function addtofav(id){
             if(localStorage.getItem=("username")){
             let choosenItem = products.find((item) => item.id === id)
             choosenItem.liked=true;
+            
             favorititems=[...favorititems ,choosenItem]
             let uniqueitem = getuniquearr(favorititems , "id")
             localStorage.setItem("productsfav" ,JSON.stringify(uniqueitem) )

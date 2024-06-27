@@ -71,8 +71,8 @@ function drawcartproduct(allproducts=[]){
                           <h3 class="add">${item.prouduct}</h3>
                           <p class="add">${item.price} </p>
                           <p class="add" id="add">${item.color}</p>
-                          <p class="add">${item.qty} </p>
-                          <button class="add_to_cart remove_from_cart" style="background:red;" onClick="remove2(${item.id})">remove from cart</button>
+                          
+                          <button class="add_to_cart remove_from_cart" style="background:red;" onClick="remove2(${item.id})">remove from fav</button>
                           
                   
             </div>
